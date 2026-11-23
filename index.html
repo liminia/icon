@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>انتخاب آیکون</title>
+    <title>LIMINI ICONS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     <style>
@@ -63,6 +63,7 @@
         .action-btn.primary { background: #3b82f6; color: white; border-color: #3b82f6; }
         .action-btn.primary:hover { background: #2563eb; }
 
+        /* ===== کارت‌های دسته‌بندی (لایت مود - برگشت به حالت قبل) ===== */
         .cat-card {
             position: relative;
             display: block; text-align: right; border-radius: 18px; overflow: hidden;
@@ -125,7 +126,6 @@
         .carousel-btn svg { width: 16px; height: 16px; }
         .carousel-btn.cancel-btn:hover:not(:disabled) { background: #ef4444; border-color: #ef4444; color: white; }
 
-        /* انیمیشن fade-in برای آیکون‌های lazy-loaded */
         .icon-display {
             opacity: 0;
             transition: opacity 0.3s ease, background-color 0.3s ease, transform 0.2s ease;
@@ -138,8 +138,10 @@
 <body class="text-slate-800">
 
     <div class="max-w-7xl mx-auto px-6 pt-8 pb-4">
-        <h1 class="text-3xl font-bold text-slate-900 mb-6">انتخاب آیکون</h1>
+        <!-- عنوان وسط‌چین -->
+        <h1 class="text-4xl font-bold text-slate-900 mb-6 tracking-tight text-center">LIMINI ICONS</h1>
 
+        <!-- پنل دسته‌بندی به حالت لایت قبلی -->
         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm mb-6 p-5 sm:p-6">
             <div class="flex items-center justify-between gap-3 mb-4">
                 <div class="flex items-center gap-3">
@@ -373,7 +375,6 @@
             document.documentElement.style.setProperty('--card-min-height', `${displaySize + 70}px`);
         }
 
-        // ===== Lazy Loading با IntersectionObserver =====
         function initIconObserver() {
             if (iconObserver) {
                 iconObserver.disconnect();
@@ -384,7 +385,6 @@
                         const el = entry.target;
                         const url = el.dataset.iconUrl;
                         if (url) {
-                            // لود آیکون فقط وقتی در viewport است
                             el.style.webkitMaskImage = `url('${url}')`;
                             el.style.maskImage = `url('${url}')`;
                             el.style.webkitMaskSize = 'contain';
@@ -400,7 +400,7 @@
                     }
                 });
             }, {
-                rootMargin: '150px' // 150 پیکسل قبل از viewport لود کن
+                rootMargin: '150px'
             });
         }
 
@@ -547,7 +547,6 @@
             const displaySize = Math.round(iconSize * displayScale);
             const colors = getCardColors(iconColor);
 
-            // رندر بدون mask-image - فقط data-icon-url ذخیره می‌شود
             grid.innerHTML = toShow.map(icon => {
                 const iconUrl = getIconUrl(icon.name, currentStyle);
                 return `
@@ -565,7 +564,6 @@
                 </div>`;
             }).join('');
 
-            // شروع lazy loading
             observeIcons();
 
             const loadMoreBtn = document.getElementById('loadMoreBtn');
@@ -576,7 +574,6 @@
         function setStyle(styleId) { 
             currentStyle = styleId; 
             renderStyleSelector(); 
-            // ریست observer چون URL آیکون‌ها تغییر می‌کند
             if (iconObserver) iconObserver.disconnect();
             initIconObserver();
             renderGrid(); 

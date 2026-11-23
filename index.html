@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="LIMINI ICONS — جستجو، شخصی‌سازی و دریافت آیکون‌های فارسی در ۶ استایل">
+    <meta name="description" content="LIMINI ICONS — جستجو، شخصی‌سازی و دریافت آیکون‌های فارسی">
     <meta name="theme-color" content="#f8fafc">
     <title>LIMINI ICONS — کتابخانه آیکون فارسی</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect x='3' y='3' width='8' height='8' rx='2' fill='%233b82f6'/><rect x='13' y='3' width='8' height='8' rx='2' fill='%2393c5fd'/><rect x='3' y='13' width='8' height='8' rx='2' fill='%2393c5fd'/><rect x='13' y='13' width='8' height='8' rx='2' fill='%233b82f6'/></svg>">
@@ -11,14 +11,12 @@
     <script>tailwind.config = { darkMode: 'class' };</script>
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
 
-    <!-- بوت تم: قبل از رندر اجرا می‌شود تا پرش رنگ نداشته باشیم -->
+    <!-- بوت تم: پیش‌فرض همیشه لایت؛ دارک فقط با انتخاب قبلی کاربر -->
     <script>
         (function () {
-            try {
-                var saved = localStorage.getItem('limini-theme');
-                var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
-                document.documentElement.classList.toggle('dark', dark);
-            } catch (e) {}
+            var dark = false;
+            try { dark = localStorage.getItem('limini-theme') === 'dark'; } catch (e) {}
+            document.documentElement.classList.toggle('dark', dark);
         })();
     </script>
 
@@ -32,7 +30,6 @@
             --accent-soft: #eff6ff;   --accent-border: #bfdbfe;
             --danger: #ef4444;        --success: #22c55e;
             --shadow-card: 0 8px 16px -4px rgba(15, 23, 42, .08);
-            /* این سه متغیر با رنگ آیکون/تم به‌صورت خودکار تنظیم می‌شوند */
             --card-bg: var(--surface); --card-name: var(--text-1); --card-title: var(--text-3);
             --icon-color: #333333;    --icon-display-size: 38px; --card-min-height: 108px;
         }
@@ -57,7 +54,6 @@
 
         .control-box { height: 52px; }
 
-        /* ===== تولبار چسبان ===== */
         #toolbar { position: sticky; top: 8px; z-index: 40; transition: box-shadow .2s ease; }
         #toolbar.stuck { box-shadow: 0 14px 34px -14px rgba(2, 6, 23, .35); }
 
@@ -149,7 +145,6 @@
         .action-btn:hover { background: var(--accent-strong); color: #fff; border-color: var(--accent-strong); }
         .action-btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
         .action-btn.primary:hover { background: var(--accent-strong); }
-        /* در دستگاه‌های لمسی، دکمه‌ها همیشه در دسترس‌اند */
         @media (hover: none) {
             .action-overlay { position: static; opacity: 1; transform: none; pointer-events: auto; background: none; padding: 10px 0 0; }
             #searchKbd { display: none; }
@@ -269,7 +264,7 @@
                 <svg class="w-8 h-8 sm:w-9 sm:h-9" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2" fill="#3b82f6"/><rect x="13" y="3" width="8" height="8" rx="2" fill="#93c5fd"/><rect x="3" y="13" width="8" height="8" rx="2" fill="#93c5fd"/><rect x="13" y="13" width="8" height="8" rx="2" fill="#3b82f6"/></svg>
                 LIMINI ICONS
             </h1>
-            <p class="text-sm text-[var(--text-3)] mt-2 text-center">جستجو، شخصی‌سازی و دریافت آیکون‌های فارسی — در ۶ استایل</p>
+            <p class="text-sm text-[var(--text-3)] mt-2 text-center">جستجو، شخصی‌سازی و دریافت آیکون‌های فارسی</p>
         </header>
 
         <!-- ===== پنل دسته‌بندی ===== -->
@@ -365,7 +360,6 @@
         <div id="skeletonGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"></div>
         <div id="iconsGrid" hidden class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"></div>
 
-        <!-- حالت خالی -->
         <div id="emptyState" hidden class="text-center py-16">
             <div class="w-16 h-16 rounded-2xl bg-[var(--surface-2)] mx-auto flex items-center justify-center">
                 <svg class="w-8 h-8 text-[var(--text-3)]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
@@ -375,7 +369,6 @@
             <button id="emptyResetBtn" type="button" class="action-btn mt-4 !px-4 !py-2 !text-xs">پاک‌سازی فیلترها</button>
         </div>
 
-        <!-- حالت خطا -->
         <div id="errorBox" hidden class="text-center py-16">
             <div class="w-16 h-16 rounded-2xl bg-[var(--surface-2)] mx-auto flex items-center justify-center">
                 <svg class="w-8 h-8 text-[var(--danger)]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
@@ -391,24 +384,21 @@
         </div>
 
         <footer class="mt-10 text-center text-xs text-[var(--text-3)]">
-            منبع آیکون‌ها: <a href="https://www.npmjs.com/package/@kashi-ui/icons" target="_blank" rel="noopener" class="text-[var(--accent)] hover:underline" dir="ltr">@kashi-ui/icons</a>
+            بارگذاری آیکون‌ها از <a href="https://unpkg.com/" target="_blank" rel="noopener" class="text-[var(--accent)] hover:underline" dir="ltr">unpkg.com</a>
             · برای جستجو کلید <kbd class="font-mono bg-[var(--surface-2)] border border-[var(--border)] rounded px-1">/</kbd> را بزنید
         </footer>
     </main>
 
-    <!-- دکمه بازگشت به بالا -->
     <button id="scrollTopBtn" aria-label="بازگشت به بالا">
         <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
     </button>
 
-    <!-- توست -->
     <div id="toast" role="status" aria-live="polite">
         <svg id="toastIconOk" class="w-5 h-5 text-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
         <svg id="toastIconErr" hidden class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         <span id="toastMessage" class="text-sm font-medium"></span>
     </div>
 
-    <!-- قالب کارت آیکون (بدون تزریق HTML ناامن؛ نام‌ها با textContent پر می‌شوند) -->
     <template id="cardTemplate">
         <article class="icon-card" tabindex="0" role="button">
             <span class="copy-badge" aria-hidden="true">✓</span>
@@ -427,12 +417,22 @@
     (function () {
         'use strict';
 
-        /* ================= پیکربندی ================= */
-        // نکته: برای پایداری بیشتر می‌توانید 'latest' را به نسخه ثابت (مثلاً '2.15.0') تغییر دهید.
-        const PKG_BASE = 'https://unpkg.com/@kashi-ui/icons@latest';
-        const DATA_URL = PKG_BASE + '/general-sources.json';
+        /* ================= پیکربندی منابع ================= */
+        // همه آیکون‌ها از unpkg بارگذاری می‌شوند. برای پایداری می‌توانید 'latest' را به نسخه ثابت تغییر دهید.
+        const UNPKG = 'https://unpkg.com';
+        const KASHI_PKG = UNPKG + '/@kashi-ui/icons@latest';
         const BATCH = 90;
         const DISPLAY_SCALE = 1.6;
+
+        /* منابع Iconify روی unpkg — افزودن منبع جدید در آینده = فقط یک خط!
+           هر مجموعه‌ای از https://icon-sets.iconify.design رایگان روی unpkg هست:
+           { id: 'solar',  pkg: '@iconify-json/solar'  },
+           { id: 'tabler', pkg: '@iconify-json/tabler' },
+           { id: 'lucide', pkg: '@iconify-json/lucide' },
+           بدون categorize، آیکون‌های منبع جدید در دسته «سایر» قرار می‌گیرند. */
+        const ICONIFY_SETS = [
+            { id: 'hugeicons', pkg: '@iconify-json/hugeicons', categorize: categorizeHuge },
+        ];
 
         const categoryOrder = [
             'ui','interface','components','actions','operations','arrow-actions','arrows',
@@ -458,7 +458,7 @@
             'points','religion','culture','iran','iranian','province','country',
             'apps','brands','frameworks','os','software','browser','search',
             'production','product','order','expense','retail','running','body',
-            'anatomy','board-games','space','traffic'
+            'anatomy','board-games','space','traffic','other'
         ];
 
         const categoryMap = {
@@ -470,7 +470,7 @@
             'beauty':'زیبایی و آرایش','blockchain':'بلاکچین','body':'بدن',
             'booking':'رزرو','board-games':'بازی رومیزی','brands':'برندها',
             'browser':'مرورگر','buildings':'ساختمان‌ها','business':'کسب‌وکار',
-            'cad':'طراحی فنی','camera':'دوربین','cart':'سبد خرید',
+            'cad':'طراحی فنی','calendar':'تقویم','camera':'دوربین','cart':'سبد خرید',
             'charts':'نمودار','chevron':'شورون','cleaning':'نظافت',
             'clock':'ساعت','cloud':'ابر','collaboration':'همکاری',
             'communication':'ارتباطات','components':'اجزا','controls':'کنترل‌ها',
@@ -480,7 +480,7 @@
             'documents':'اسناد','drinks':'نوشیدنی','ecommerce':'تجارت الکترونیک',
             'education':'آموزش','email':'ایمیل','emoji':'شکلک','energy':'انرژی',
             'entertainment':'سرگرمی','expense':'هزینه','faces':'چهره',
-            'fashion':'مد و پوشاک','file':'فایل','files':'فایل‌ها',
+            'family':'خانواده','fashion':'مد و پوشاک','file':'فایل','files':'فایل‌ها',
             'finance':'مالی','fitness':'تناسب اندام','flags':'پرچم',
             'folders':'پوشه','food':'خوراکی','forms':'فرم',
             'frameworks':'فریم‌ورک','furniture':'مبلمان','games':'بازی',
@@ -498,7 +498,7 @@
             'money':'پول','music':'موسیقی','navigation':'ناوبری',
             'nature':'طبیعت','network':'شبکه','notifications':'اعلان',
             'numbers':'اعداد','office':'اداری','operations':'عملیات',
-            'order':'سفارش','os':'سیستم‌عامل','payment':'پرداخت',
+            'order':'سفارش','os':'سیستم‌عامل','other':'سایر','payment':'پرداخت',
             'people':'افراد','persian':'فارسی','phone':'تلفن',
             'photo':'عکس','playback':'پخش','plants':'گیاهان',
             'points':'امتیاز','privacy':'حریم خصوصی','product':'محصول',
@@ -508,7 +508,7 @@
             'security':'امنیت','server':'سرور','shapes':'اشکال',
             'shopping':'خرید','smoking':'سیگار','smart-home':'خانه هوشمند',
             'social':'اجتماعی','software':'نرم‌افزار','space':'فضا',
-            'stationery':'لوازم‌التحریر','status':'وضعیت','store':'فروشگاه',
+            'sports':'ورزش','stationery':'لوازم‌التحریر','status':'وضعیت','store':'فروشگاه',
             'support':'پشتیبانی','symbols':'نمادها','table':'جدول',
             'tables':'جداول','text':'متن','time':'زمان','tools':'ابزار',
             'tobacco':'تنباکو','transport':'حمل‌ونقل','travel':'سفر',
@@ -533,6 +533,149 @@
             '#6366f1','#a855f7','#ec4899','#8b5cf6','#14b8a6','#f43f5e'
         ];
 
+        /* ===== دسته‌بندی خودکار بر اساس نام (برای منابعی که متادیتای دسته ندارند) ===== */
+        const HUGE_OVERRIDES = [
+            ['time','alarm-clock'], ['design','aspect-ratio'],
+            ['text','arrange-by-numbers arrange-by-letters'],
+            ['hardware','card-sim sd-card sim-card'], ['audio','audio-wave'],
+            ['science','test-tube'], ['messaging','paper-plane'],
+            ['religion','christian-cross'], ['support','customer-service customer-support']
+        ];
+        const HUGE_RULES = [
+            ['brands','facebook twitter instagram linkedin github gitlab google apple android windows microsoft amazon netflix spotify youtube whatsapp telegram tiktok snapchat pinterest reddit discord slack figma adobe chrome firefox safari edge opera ubuntu linux ios playstation xbox nintendo steam twitch dropbox paypal visa mastercard stripe shopify wordpress react angular vue nodejs python java php swift kotlin flutter docker kubernetes aws azure firebase openai chatgpt claude gemini copilot meta behance dribbble medium npm codepen gmail outlook yahoo skype zoom teams trello notion jira asana airbnb uber lyft bebo bing baidu yandex duckduckgo brave vivaldi tor google-play play-store blogger bluesky bootstrap brandfetch capcut castbox chrysler'],
+            ['space','rocket satellite astronaut planet galaxy universe cosmos meteor comet asteroid ufo alien spaceship space-station orbit lunar mars jupiter saturn venus mercury neptune uranus pluto constellation zodiac eclipse black-hole nebula supernova space-shuttle space-suit space-helmet launch-pad falling-star'],
+            ['ai','ai robot brain neural machine-learning deep-learning artificial-intelligence intelligence chatbot bot llm prompt generative'],
+            ['crypto','bitcoin ethereum crypto cryptocurrency blockchain litecoin dogecoin solana tether usdt binance coinbase metamask nft mining-rig crypto-wallet'],
+            ['bank','bank banking atm teller safe-deposit'],
+            ['wallet','wallet'],
+            ['payment','payment credit-card debit-card card invoice receipt transaction pos checkout paypass contactless-payment swipe-card'],
+            ['money','money cash coin coins dollar euro pound yen rial rupee dinar currency exchange cashback salary wage income profit loss discount coupon voucher gift-card loyalty banknote badge-cent badge-russian-ruble badge-swiss-franc badge-turkish-lira gold-bar charity donation donate'],
+            ['finance','finance financial investment investor stock stocks trading trade broker portfolio dividend interest loan credit debt mortgage insurance tax taxes audit accounting accountant bookkeeping budget ledger balance-sheet payroll'],
+            ['shopping','shopping cart basket bag shop store mall market marketplace supermarket grocery ecommerce e-commerce product price price-tag barcode wishlist compare-products cashier'],
+            ['logistics','package parcel box boxes courier logistics warehouse inventory tracking shipment dispatch supply-chain freight cargo delivery shipping'],
+            ['order','order orders'],
+            ['warning','alert warning danger caution error forbidden prohibited radiation biohazard toxic hazard risk ban blocked'],
+            ['security','lock unlock locked shield security password fingerprint face-id key safe vault cctv surveillance guard encryption firewall incognito spy hacker phishing malware antivirus protection secure gun rifle pistol ammo bullet bomb grenade missile tank weapon sword dagger katana biometric-access'],
+            ['auth','login logout sign-in sign-out authentication otp two-factor 2fa verification verify captcha authorized'],
+            ['identity','id id-card id-verified identity identification'],
+            ['privacy','eye view hide visible invisible preview observe anonymous'],
+            ['notifications','notification bell'],
+            ['email','mail email inbox envelope at newsletter spam junk-mail mailbox'],
+            ['messaging','message chat comment bubble conversation conversations sms send reply forward-message sent chatting'],
+            ['phone','call phone telephone dial calling ringtone voicemail missed-call incoming-call outgoing-call phone-book contacts contact'],
+            ['communication','megaphone announcement broadcast antenna walkie-talkie fax podium'],
+            ['social','social hashtag mention follow follower community'],
+            ['people','user users profile account man woman person people customer team group crowd avatar boy girl male female gender pregnant couple employee staff manager admin moderator king queen thief robber walker pedestrian'],
+            ['family','family parents parent mother father mom dad grandma grandpa grandmother grandfather sibling brother sister twins genealogy ancestry generation'],
+            ['kids','baby kid kids child children toddler infant newborn pacifier stroller pram crib cradle rattle teether diaper onesie bib nursery kindergarten toy toys teddy-bear rubber-duck building-blocks rocking-horse playground seesaw trampoline balloon balloons kite birthday piñata pinata party confetti blocks bubbles'],
+            ['emoji','smile smiley happy sad angry emotion emoji laugh cry wink kiss meh surprised confused expression feeling mood angel annoyed disappointed relieved relaxed unhappy grinning squinting tongue smirk frown pout shocked crying dead devil dizzy drooling evil flushed geek grimacing halo in-love jealous joy kidding laughing monocle nerd neutral pensive pouting rolling sarcastic sick sleeping sleepy sob suspicious thinking tired unamused vomit worried yawning zany caring'],
+            ['gestures','hand finger thumb thumbs fist palm waving clap clapping high-five touch tap swipe pinch grab drag cursor pointer click handshake hold shaka'],
+            ['body','bone lung kidney liver stomach intestine ear nose muscle biceps spine skull skeleton blood vein organ anatomy body'],
+            ['medical','medical hospital doctor nurse pill medicine drug syringe injection vaccine stethoscope first-aid ambulance dental tooth teeth health healthcare heartbeat pulse blood-pressure thermometer bandage crutch surgery scalpel x-ray virus bacteria corona pharmacy prescription capsule iv-drip stretcher ultrasound ecg ekg aids ampoule cardiogram clinic caduceus'],
+            ['accessibility','wheelchair blind deaf accessibility sign-language braille hearing-aid'],
+            ['health','meditation wellness sleep mental'],
+            ['fitness','gym dumbbell barbell kettlebell push-up pull-up sit-up workout exercise treadmill jump-rope yoga pilates stretching protein supplement'],
+            ['sports','sport sports football soccer basketball baseball volleyball tennis badminton golf hockey cricket rugby bowling billiard ping-pong table-tennis ball stadium referee whistle scoreboard olympic marathon running jogging sprint swimming swim surf surfing skate skateboard ski skiing snowboard climbing boxing boxer karate judo wrestling fencing archery archer darts'],
+            ['games','game gaming joystick gamepad console controller dice puzzle chess checkers board-game playing-card cards poker casino slot arcade tetris pacman'],
+            ['entertainment','cinema theater theatre magic circus carnival festival concert stage drama comedy'],
+            ['rewards','trophy medal award reward prize crown tiara winner champion leaderboard badge laurel wreath gift'],
+            ['travel','travel suitcase luggage backpack passport ticket boarding-pass visa tour tourist guide camping tent caravan beach resort hotel booking reservation itinerary souvenir postcard landmark monument globe world earth international adventure binoculars global berlin baggage-claim baggage borobudur burj-al-arab shaheed-minar'],
+            ['aviation','plane airplane aircraft flight airport helicopter drone hot-air-balloon parachute jet runway cockpit propeller air-balloon control-tower airline'],
+            ['transport','car bus truck van taxi motorcycle motorbike scooter bicycle bike tricycle train metro subway tram rail railway monorail cable-car ship boat ferry yacht sail sailboat canoe kayak anchor steering road highway tunnel parking fuel gas-station charging-station tire wheel engine speedometer odometer seatbelt airbag rickshaw carriage sled accident camper'],
+            ['automotive','car-service car-wash car-repair brake clutch piston spark-plug radiator exhaust bumper headlight windshield wiper'],
+            ['traffic','traffic road-sign street-sign stop-sign speed-limit crosswalk pedestrian-crossing roundabout intersection'],
+            ['location','location map maps pin gps compass navigation route direction geo coordinate address destination waypoint milestone distance radius area zone region explore discover atlas navigator locate location-pin map-pin'],
+            ['buildings','building building2 apartment office city skyscraper castle palace fort lighthouse embassy capitol tower berlin-tower bridge brick-wall'],
+            ['home','home house door window gate fence garage basement attic roof chimney stairs elevator escalator balcony porch doormat'],
+            ['smart-home','smart-home smart-house iot home-automation smart-speaker thermostat sensor smoke-detector air-conditioner heater humidifier purifier air-vent'],
+            ['furniture','furniture sofa couch chair armchair stool bench bed bedroom mattress pillow blanket wardrobe closet cabinet drawer dresser shelf bookshelf desk lamp chandelier curtain carpet rug mirror vase dining-table coffee-table table-lamp blinds candelier'],
+            ['energy','energy battery power plug power-socket outlet electric electricity solar-panel wind-turbine nuclear generator transformer high-voltage lightning bolt flash bulb light-bulb idea flame fire bonfire campfire power-plant barrel heat-pump transmission-tower'],
+            ['weather','weather sun sunny moon cloud-rain cloud-snow cloud-lightning cloud-sun cloudy rain rainbow snow snowflake storm thunder tornado hurricane typhoon fog mist haze temperature umbrella wind breeze humidity droplet water-drop sunrise sunset season winter summer autumn avalanche celsius fahrenheit kelvin'],
+            ['nature','tree flower leaf forest jungle mountain hill valley canyon desert island river lake sea ocean wave waterfall volcano earthquake rock stone cave national-park cactus mushroom acorn pine palm bamboo grass bush hedge seed sprout sapling root branch trunk log wood timber birdhouse'],
+            ['plants','plant plants potted-plant house-plant flower-pot watering-can gardening garden greenhouse bonsai herb seedling photosynthesis'],
+            ['animals','animal cat dog puppy kitten bird fish shark whale dolphin octopus crab lobster shrimp turtle frog snake lizard crocodile dinosaur dragon lion tiger bear panda elephant giraffe zebra horse donkey cow bull buffalo sheep goat pig rabbit rat hamster squirrel fox wolf deer elk moose camel kangaroo koala monkey gorilla ape chimpanzee penguin owl eagle hawk parrot peacock flamingo swan duck goose chicken rooster hen turkey pigeon crow raven sparrow butterfly bee wasp ant spider scorpion snail worm ladybug beetle mosquito dragonfly cricket grasshopper bat hedgehog raccoon skunk otter seal walrus paw pet veterinary aquarium terrarium beehive honeycomb nest feather wing tail horn antler hoof claw fang beak shell coral jellyfish starfish seahorse stingray eel salmon tuna goldfish koi'],
+            ['food','food burger hamburger pizza hot-dog sandwich taco burrito sushi noodle noodles pasta spaghetti rice curry soup salad steak meat beef pork kebab bbq barbecue grill roast sausage bacon egg omelette cheese butter bread toast croissant bagel pretzel donut doughnut cake cupcake muffin cookie biscuit chocolate candy lollipop ice-cream popsicle dessert pudding jelly jam honey sugar salt pepper spice sauce ketchup mustard mayonnaise olive tomato potato carrot onion garlic broccoli cucumber eggplant corn pumpkin banana orange lemon lime grape grapes strawberry blueberry raspberry cherry peach pear plum mango pineapple watermelon melon kiwi coconut avocado papaya fig fruit fruits vegetable vegetables restaurant chef cook cooking recipe apron frying-pan pan pot wok cutlery fork spoon knife chopsticks plate dish bowl tray napkin tablecloth dining breakfast lunch dinner snack popcorn chips fries nachos cracker cereal oatmeal porridge pancake waffle chicken-leg fried-chicken olive-oil apricot bean berries blackberry cranberry dragon-fruit durian guava lychee nectarine persimmon pomegranate chestnut hazelnut walnut almond cashew pistachio peanut pecan cinnamon-roll cinnamon citrus'],
+            ['drinks','coffee tea espresso latte cappuccino coffee-bean coffee-machine kettle teapot cup mug glass goblet wine beer cocktail whiskey vodka champagne alcohol juice smoothie milkshake soda cola lemonade water-bottle bottle thermos straw ice-cube drink drinks beverage cafe bartender brewery bubble-tea milk'],
+            ['kitchen','kitchen oven stove microwave fridge refrigerator freezer blender mixer toaster dishwasher kitchen-hood range-hood cutting-board rolling-pin whisk spatula ladle grater peeler colander strainer measuring-cup kitchen-scale beater'],
+            ['hygiene','soap shampoo shower bath bathtub towel toothbrush toothpaste hand-sanitizer sanitizer toilet wc restroom bidet tissue toilet-paper razor shave shaver comb hairbrush hair-dryer hairdryer lotion deodorant'],
+            ['cleaning','cleaning clean broom mop vacuum-cleaner vacuum duster sponge spray-bottle spray detergent recycle waste litter dustpan squeegee polish disinfect robot-vacuum'],
+            ['laundry','laundry washing-machine washer dryer iron ironing clothes-hanger hanger clothesline dry-clean fabric textile sewing stitch needle thread yarn knitting crochet zipper'],
+            ['fashion','shirt t-shirt tshirt dress skirt pants trousers jeans shorts jacket coat hoodie sweater cardigan suit blazer vest underwear bra socks shoe shoes sneaker boot boots sandal slipper heel heels hat cap beanie beret scarf glove gloves mitten tie bow-tie belt buckle sunglasses glasses jewelry necklace bracelet ring earring pendant brooch handbag uniform kimono sari abaya hijab turban veil wig mustache beard goatee'],
+            ['beauty','makeup lipstick lipgloss mascara eyeshadow eyeliner eyebrow blush foundation concealer nail-polish manicure pedicure salon barber hair-salon beauty-salon spa massage facial face-mask skin-care skincare cosmetic cosmetics perfume cologne aromatherapy candle incense sauna jacuzzi tanning sunscreen tweezers eyelash'],
+            ['education','school university college academy campus classroom blackboard whiteboard chalkboard student teacher professor lecture lesson course class education learn learning study exam test quiz homework assignment assignments grade diploma degree graduation scholarship tuition school-bus book books textbook open-book library dictionary encyclopedia e-book audio-book reading abacus locker principal dean alumni semester curriculum syllabus tutor tutoring mentoring training certificate certification'],
+            ['science','science scientist laboratory lab test-tube beaker flask bunsen petri-dish microscope molecule atom electron proton neutron nucleus dna rna gene genetic genome chromosome evolution fossil archaeology paleontology geology chemistry chemical physics biology biotech experiment research hypothesis theory formula equation math mathematics geometry algebra calculus trigonometry pi infinity sigma integral derivative quantum relativity gravity magnet magnetism prism spectrum laser isotope catalyst enzyme cell cells microbe organism specimen centrifuge incubator autoclave pipette dropper acceleration'],
+            ['numbers','calculator plus minus multiply divide equal not-equal percent percentage fraction decimal digit number numbers numeral count counter tally sum addition subtraction multiplication division square-root exponent logarithm binary hexadecimal prime integer ratio proportion parabola calculate'],
+            ['text','text font typography paragraph text-align text-format letter-spacing line-height line-spacing word-spacing text-color text-size bold italic underline strikethrough superscript subscript capitalize uppercase lowercase translate translation language languages alphabet letter letters character glyph quote quotation apostrophe comma semicolon colon exclamation question-mark ampersand ampersands asterisk bracket brackets parenthesis brace braces slash backslash hyphen underscore tilde bullet indent outdent align alignment justify kerning serif monospace cursive handwriting calligraphy signature autograph scribble spell-check spellcheck grammar vocabulary word words syllable phonetic pronunciation accent dialect bilingual multilingual subtitle captions caption transcript dictation speech-to-text text-to-speech heading case baseline arrange a-large-small alpha beta gamma delta omega theta'],
+            ['search','search zoom find magnifier magnify lookup'],
+            ['loading','loading spinner refresh sync reload rotate-cw rotate-ccw progress loader buffering'],
+            ['design','design color-picker color-palette palette paint-brush brush paint-bucket paint-roller spray-can spray-paint airbrush pencil pen fountain-pen ballpoint marker highlighter crayon colored-pencil eraser ruler protractor drawing-compass set-square bezier vector anchor-point pen-tool path curve spline gradient opacity transparency blend layer layers artboard canvas easel sketch draw drawing illustration doodle trace golden-ratio composition perspective isometric wireframe mockup prototype crop resize rotate flip symmetry pattern texture swatch hue saturation brightness contrast sharpen blur vignette effect eyedropper cmyk rgb pixel dpi resolution aspect-ratio frame stroke outline shadow glow neon wood-plane pathfinder border background ease angle acute obtuse axis-3d axis3d 3d blueprint bring-to-front send-to-back cliparts clipart'],
+            ['tools','tool tools wrench spanner hammer mallet screwdriver screw drill saw handsaw chainsaw jigsaw hacksaw axe hatchet chisel rasp clamp vise anvil forge welding soldering solder glue adhesive tape duct-tape measuring-tape level plumb toolbox toolbelt workbench crowbar pickaxe shovel spade rake hoe pitchfork trowel wheelbarrow ladder scaffold scaffolding pulley winch jack hydraulic pneumatic compressor pressure-washer grinder sander polisher lathe cnc engraver nut-and-bolt pump bucket'],
+            ['industrial','factory industrial industry manufacturing assembly assembly-line production conveyor robot-arm machine machinery forklift pallet crate container pipeline refinery oil-rig derrick mine mining quarry excavator bulldozer backhoe loader dump-truck cement-mixer concrete steel metal smelting foundry furnace boiler cooling-tower silo crane infrastructure'],
+            ['workshop','workshop repair maintenance service fix spare-parts mechanic'],
+            ['charts','chart charts graph analytics statistics statistic pie-chart bar-chart line-chart area-chart donut-chart scatter histogram heatmap treemap gantt kanban kpi metric metrics trend growth decline forecast projection report reports infographic visualization gauge dial meter benchmark conversion funnel cohort retention churn engagement insight insights activity'],
+            ['database','database data dataset data-flow data-transfer big-data data-mining data-warehouse sql nosql query schema spreadsheet csv backup restore migration replication sharding cache queue hierarchy relation join aggregate pivot group-by structure'],
+            ['development','code coding programmer developer development programming source-code terminal command-line cli shell bash script bug debug debugging breakpoint compile compiler build deploy deployment release version git git-branch git-fork commit pull-request repository repo clone ide editor api sdk code-library framework package module component dependency webpack typescript javascript html css sass json xml yaml markdown regex algorithm function variable constant parameter argument iteration recursion condition boolean string array object class method refactor lint unit-test testing qa staging localhost backend frontend fullstack devops ci-cd microservice serverless lambda webhook endpoint rest graphql grpc websocket http https url uri domain dns socket proxy vpn ssh ssl tls jwt session cookie crud orm mvc plugin extension addon widget snippet template polyfill bundle minify hash checksum uuid base64 encoding decoding serialize parse parser syntax runtime emulator simulator virtual-machine node jsx tsx'],
+            ['server','server servers hosting datacenter data-center rack mainframe cluster node-server'],
+            ['wifi','wifi'],
+            ['bluetooth','bluetooth'],
+            ['network','network signal router hotspot ethernet lan wan bandwidth modem connection disconnect peer radar peer-to-peer centralized decentralized'],
+            ['cloud','cloud cloud-upload cloud-download cloud-sync cloud-storage'],
+            ['hardware','hardware cpu chip processor motherboard ram memory ssd hdd hard-drive hard-disk usb cable adapter dongle sim sd-card gpu graphics-card heatsink circuit transistor resistor capacitor diode pendrive usb-drive'],
+            ['devices','device devices laptop computer pc monitor screen keyboard mouse tablet smartphone cellphone iphone ipad smartwatch watch tv television webcam printer scanner projector speaker headphone headphones earphone earbuds microphone mic headset remote touchpad airpod airdrop airplay cast'],
+            ['camera','camera photo photograph photography lens shutter aperture tripod selfie panorama polaroid camcorder gopro dashcam focus'],
+            ['images','image images picture gallery album collage wallpaper screenshot crop-image image-editor landscape portrait'],
+            ['video','video film movie clip clapperboard storyboard 4k 8k mp4'],
+            ['playback','play pause stop resume rewind fast-forward skip next previous shuffle repeat playback backward go-backward go-forward record recording loop playlist'],
+            ['audio','audio sound speaker volume mute podcast radio waveform equalizer acoustics mp3'],
+            ['music','music musical guitar piano violin drum trumpet saxophone flute harp banjo ukulele cello clarinet trombone accordion synthesizer dj turntable vinyl cassette cd disc song melody metronome tuning music-note'],
+            ['media','media newspaper news magazine journal article blog rss feed stream streaming live'],
+            ['ui','menu hamburger more dots list grid-view list-view sidebar navbar toolbar breadcrumb tab tabs accordion carousel pagination scrollbar tooltip popover modal dialog popup window panel scroll'],
+            ['interface','interface ui ux'],
+            ['layout','layout dashboard grid column row split header footer container section wrapper masonry rows columns'],
+            ['tables','table tables table-cell table-row table-column'],
+            ['forms','form forms input checkbox radio toggle switch select option dropdown textarea fieldset label placeholder'],
+            ['controls','control controls slider knob stepper picker button'],
+            ['settings','settings setting gear preferences options configuration adjust adjustment filter tune customize'],
+            ['status','status check tick checkmark cross cancel close delete trash remove add edit update save done success fail pending online offline active inactive info x'],
+            ['actions','action copy paste cut duplicate move transfer import export upload download share link unlink attach attachment pin unpin bookmark favorite heart love like dislike heartbreak star print scan qr-code drag-drop select deselect expand collapse minimize maximize fullscreen exit enter back forward undo redo reset clipboard task sorting sort'],
+            ['navigation','navigate navigation'],
+            ['arrows','arrow arrows chevron chevrons caret'],
+            ['directional','up down left right top bottom north south east west horizontal vertical diagonal'],
+            ['shapes','shape shapes circle square triangle rectangle pentagon hexagon octagon polygon oval ellipse diamond rhombus trapezoid parallelogram cube sphere cylinder cone pyramid prism torus squares line'],
+            ['symbols','symbol symbols peace yin-yang ankh'],
+            ['flags','flag flags banner pennant'],
+            ['religion','religion mosque church temple synagogue kaaba quran bible torah pray prayer rosary crucifix jesus allah muhammad buddha monk nun priest imam rabbi pastor halal kosher ramadan ramadhan easter christmas diwali hanukkah iftar suhoor hajj umrah pilgrimage scripture gospel verse sermon worship adzan bedug alms qurban sadaqah zakat om'],
+            ['culture','culture museum art heritage tradition folk'],
+            ['legal','legal law justice court judge lawyer attorney gavel courthouse prison police handcuffs lawsuit contract agreement policy terms compliance regulation copyright patent trademark license scale'],
+            ['business','business briefcase work job career meeting presentation target strategy partnership negotiation deal conference summit seminar webinar pitch startup enterprise corporate company corporation organization institution agency firm advertisement advertisiment marketing promotion campaign billboard seo affiliate auction'],
+            ['collaboration','collaboration collaborate coworking teamwork brainstorm'],
+            ['support','support help helpdesk customer-service live-chat faq troubleshoot'],
+            ['stationery','stationery notebook notepad sticky-note paperclip clip stapler staple paper'],
+            ['folders','folder folders directory'],
+            ['files','file files document documents doc pdf txt attachment note notes page pages sheet draft manuscript brochure catalogue'],
+            ['archive','archive zip compress extract rar 7z'],
+            ['property','property real-estate estate landlord tenant rent lease'],
+            ['agriculture','agriculture farm farming farmer tractor harvest crop vineyard orchard livestock barn barns irrigation plow plough fertilizer pesticide scarecrow windmill'],
+            ['time','time clock alarm timer stopwatch hourglass deadline'],
+            ['calendar','calendar calendar1 calendars date schedule event appointment planner agenda'],
+            ['booking','booking reserve'],
+            ['technology','technology tech vr ar augmented-reality virtual-reality hologram nanotechnology'],
+            ['browser','browser web website webpage internet www'],
+            ['software','software app apps application program install uninstall'],
+            ['os','os operating-system'],
+            ['smoking','smoking cigarette cigar hookah vape e-cigarette tobacco ashtray lighter cannabis']
+        ];
+        const HUGE_CAT_RULES = HUGE_OVERRIDES.concat(HUGE_RULES).map(([c, s]) => [c, s.split(' ')]);
+        function categorizeHuge(name) {
+            const toks = name.split('-');
+            for (const [cat, kws] of HUGE_CAT_RULES) {
+                for (const k of kws) {
+                    if (k.indexOf('-') !== -1 ? name.includes(k) : toks.includes(k)) return cat;
+                }
+            }
+            return 'other';
+        }
+
         /* ================= ابزارها ================= */
         const $ = id => document.getElementById(id);
         const root = document.documentElement;
@@ -540,7 +683,6 @@
         const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
         const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
         const debounce = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
-        // نرمال‌سازی فارسی/عربی برای جستجوی یکدست
         const normalize = s => (s || '').toString().toLowerCase()
             .replace(/ي/g, 'ی').replace(/ك/g, 'ک').replace(/[أإآ]/g, 'ا').replace(/ة/g, 'ه')
             .replace(/\u200c/g, ' ').replace(/\s+/g, ' ').trim();
@@ -553,19 +695,32 @@
             set(k, v) { try { localStorage.setItem('limini-' + k, v); } catch (e) {} }
         };
         const getStylePath = s => s === 'default' ? 'svg' : 'svg/' + s;
-        const getIconUrl = (name, style) => `${PKG_BASE}/dist/${getStylePath(style)}/${name}.svg`;
+        const getIconUrl = (name, style) => `${KASHI_PKG}/dist/${getStylePath(style)}/${name}.svg`;
         const catLabel = c => categoryMap[c] || c.replace(/-/g, ' ');
+        // هر منبع فقط استایل‌های خودش را دارد؛ بقیه به‌صورت خودکار به استایل پیش‌فرض برمی‌گردند
+        const styleFor = (icon, style) => icon.source === 'kashi' ? style : 'default';
 
-        /* ================= وضعیت (با بازیابی تنظیمات کاربر) ================= */
+        /* ساخت SVG در حافظه برای منابع JSON (بدون درخواست شبکه per-icon) */
+        const buildRawSvg = ic => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${ic.w} ${ic.h}">${ic.body}</svg>`;
+        const svgToDataUrl = svg => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+        function iconMaskUrl(icon, style) {
+            if (icon.body) {
+                if (!icon._mask) icon._mask = svgToDataUrl(buildRawSvg(icon));
+                return icon._mask;
+            }
+            return getIconUrl(icon.name, styleFor(icon, style));
+        }
+
+        /* ================= وضعیت ================= */
         let allIcons = [], filteredIcons = [], iconsByCat = {}, sortedCats = [];
-        let dataReady = false;
+        const ICON_INDEX = new Map();
+        let dataReady = false, sourcesPending = 0;
         let currentStyle = styles.some(s => s.id === store.get('style', 'default')) ? store.get('style', 'default') : 'default';
         let iconSize = clamp(parseInt(store.get('size', '24')) || 24, 12, 256);
         let iconColor = /^#[0-9a-fA-F]{6}$/.test(store.get('color', '')) ? store.get('color', '#333333') : '#333333';
         let searchQuery = '', selectedCategory = 'all', catFilterQuery = '';
         let visibleCount = BATCH, lastRendered = 0;
 
-        /* ================= ارجاع المان‌ها ================= */
         const grid = $('iconsGrid'), skeletonGrid = $('skeletonGrid'), emptyState = $('emptyState'), errorBox = $('errorBox');
         const resultCount = $('resultCount'), loadMoreBtn = $('loadMoreBtn'), sentinel = $('sentinel');
         const resultsRow = $('resultsRow'), resetFiltersBtn = $('resetFiltersBtn');
@@ -578,7 +733,7 @@
         const colorPreview = $('colorPreview'), colorHexDisplay = $('colorHexDisplay');
         const toolbar = $('toolbar'), scrollTopBtn = $('scrollTopBtn'), cardTemplate = $('cardTemplate');
 
-        /* ================= بارگذاری تنبل ماسک‌ها (مشترک بین کارت‌ها و پیش‌نمایش دسته‌ها) ================= */
+        /* ================= بارگذاری تنبل ماسک‌ها ================= */
         function applyMask(el) {
             const url = el.dataset.mask;
             if (!url) return;
@@ -596,7 +751,7 @@
             document.querySelectorAll('[data-mask]').forEach(el => maskObserver ? maskObserver.observe(el) : applyMask(el));
         }
 
-        /* ================= اندازه و رنگ (فقط با CSS Variable — بدون حلقه روی کارت‌ها) ================= */
+        /* ================= اندازه و رنگ ================= */
         function applySizeVars() {
             const display = Math.round(iconSize * DISPLAY_SCALE);
             root.style.setProperty('--icon-display-size', display + 'px');
@@ -609,7 +764,6 @@
             const dark = root.classList.contains('dark');
             const lum = luminance(iconColor);
             let bg = 'var(--surface)', name = 'var(--text-1)', title = 'var(--text-3)';
-            // کنتراست خودکار: آیکون روشن در تم لایت → کارت تیره / آیکون تیره در تم دارک → کارت روشن
             if (!dark && lum > 0.62) {
                 const l = Math.max(15, 100 - (lum - 0.62) * 230);
                 bg = `hsl(222 25% ${l}%)`; name = '#e2e8f0'; title = '#94a3b8';
@@ -636,7 +790,7 @@
             if (persist) store.set('color', iconColor);
         }
 
-        /* ================= تم ================= */
+        /* ================= تم (پیش‌فرض لایت) ================= */
         function syncThemeUI() {
             const dark = root.classList.contains('dark');
             $('themeIconMoon').hidden = dark;
@@ -648,15 +802,15 @@
             root.classList.toggle('dark');
             store.set('theme', root.classList.contains('dark') ? 'dark' : 'light');
             syncThemeUI();
-            applyColor(); // بازتنظیم کنتراست کارت‌ها
+            applyColor();
         });
 
-        /* ================= استایل‌ها و رنگ‌های پیشنهادی (یک‌بار رندر) ================= */
+        /* ================= استایل‌ها و رنگ‌های پیشنهادی ================= */
         function renderStyleSelector() {
             $('styleSelector').innerHTML = styles.map(s => `
                 <button type="button" data-style="${s.id}" aria-pressed="${s.id === currentStyle}"
                         class="style-btn ${s.id === currentStyle ? 'active' : ''}" title="استایل ${s.name}">
-                    <img src="${PKG_BASE}/dist/${getStylePath(s.id)}/${s.rep}.svg" class="w-5 h-5" alt="" draggable="false">
+                    <img src="${KASHI_PKG}/dist/${getStylePath(s.id)}/${s.rep}.svg" class="w-5 h-5" alt="" draggable="false">
                     <span class="style-label">${s.name}</span>
                 </button>`).join('');
         }
@@ -673,7 +827,7 @@
                 b.classList.toggle('active', on);
                 b.setAttribute('aria-pressed', on);
             });
-            renderGrid(); // تعداد نمایش فعلی حفظ می‌شود؛ موقعیت اسکرول نمی‌پرد
+            renderGrid();
         }
 
         function renderPresetColors() {
@@ -690,34 +844,80 @@
             if (sw && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); updateColor(sw.dataset.color); }
         });
 
-        /* ================= دریافت داده ================= */
-        async function loadData() {
-            dataReady = false;
-            errorBox.hidden = true; emptyState.hidden = true; loadMoreBtn.hidden = true;
-            grid.hidden = true; skeletonGrid.hidden = false;
-            $('categorySummary').textContent = 'در حال بارگذاری…';
+        /* ================= دریافت منابع (موازی + تدریجی) ================= */
+        async function fetchJson(url, ms = 25000) {
             const ctrl = new AbortController();
-            const timer = setTimeout(() => ctrl.abort(), 20000);
+            const timer = setTimeout(() => ctrl.abort(), ms);
             try {
-                const res = await fetch(DATA_URL, { signal: ctrl.signal });
+                const res = await fetch(url, { signal: ctrl.signal });
                 if (!res.ok) throw new Error('HTTP ' + res.status);
-                const data = await res.json();
-                allIcons = (data.icons || []).map(ic => ({
-                    ...ic,
-                    _hay: normalize(`${ic.name} ${ic.title || ''} ${catLabel(ic.category)} ${ic.upstream || ''}`)
-                }));
-                buildCategoryIndex();
-                dataReady = true;
-                skeletonGrid.hidden = true; grid.hidden = false;
-                renderCategories();
-                filterAndRender();
-            } catch (err) {
-                console.error('خطا در دریافت آیکون‌ها:', err);
-                skeletonGrid.hidden = true; errorBox.hidden = false;
-                $('categorySummary').textContent = 'خطا در بارگذاری';
+                return await res.json();
             } finally { clearTimeout(timer); }
         }
-        $('retryBtn').addEventListener('click', loadData);
+
+        async function loadKashi() {
+            const data = await fetchJson(KASHI_PKG + '/general-sources.json');
+            return (data.icons || []).map(ic => ({
+                id: 'kashi:' + ic.name, name: ic.name, title: ic.title || '',
+                category: ic.category || 'other', source: 'kashi'
+            }));
+        }
+
+        async function loadIconifySet(set) {
+            const data = await fetchJson(`${UNPKG}/${set.pkg}@latest/icons.json`);
+            const W = data.width || 24, H = data.height || 24;
+            const out = [];
+            const push = (name, ic) => {
+                if (!ic || !ic.body || ic.hidden) return;
+                out.push({
+                    id: set.id + ':' + name, name, title: '',
+                    category: set.categorize ? set.categorize(name) : 'other',
+                    source: set.id, body: ic.body, w: ic.width || W, h: ic.height || H
+                });
+            };
+            Object.entries(data.icons || {}).forEach(([n, ic]) => push(n, ic));
+            Object.entries(data.aliases || {}).forEach(([n, a]) => push(n, (data.icons || {})[a.parent]));
+            return out;
+        }
+
+        function mergeSource(icons) {
+            icons.forEach(ic => {
+                ic._hay = normalize(`${ic.name} ${ic.title} ${catLabel(ic.category)}`);
+                ICON_INDEX.set(ic.id, ic);
+            });
+            allIcons = allIcons.concat(icons);
+            buildCategoryIndex();
+            dataReady = true;
+            skeletonGrid.hidden = true; grid.hidden = false; errorBox.hidden = true;
+            const sl = carousel.scrollLeft;
+            renderCategories();
+            carousel.scrollLeft = sl;
+            refilterKeepVisible();
+        }
+
+        async function loadAllSources() {
+            dataReady = false;
+            allIcons = []; ICON_INDEX.clear(); filteredIcons = [];
+            visibleCount = BATCH; lastRendered = 0; grid.innerHTML = '';
+            grid.hidden = true; skeletonGrid.hidden = false;
+            errorBox.hidden = true; emptyState.hidden = true; loadMoreBtn.hidden = true;
+            $('categorySummary').textContent = 'در حال بارگذاری…';
+            sourcesPending = 1 + ICONIFY_SETS.length;
+            let ok = 0, fail = 0;
+            const jobs = [loadKashi(), ...ICONIFY_SETS.map(loadIconifySet)];
+            await Promise.all(jobs.map(p =>
+                p.then(icons => { ok++; mergeSource(icons); })
+                 .catch(err => { fail++; console.error('خطا در بارگذاری منبع:', err); })
+                 .finally(() => { sourcesPending--; if (dataReady) renderCategorySummary(); })
+            ));
+            if (!ok) {
+                skeletonGrid.hidden = true; errorBox.hidden = false;
+                $('categorySummary').textContent = 'خطا در بارگذاری';
+            } else if (fail) {
+                showToast('برخی منابع بارگذاری نشدند', true);
+            }
+        }
+        $('retryBtn').addEventListener('click', loadAllSources);
 
         function buildCategoryIndex() {
             iconsByCat = {};
@@ -732,10 +932,16 @@
         }
 
         /* ================= دسته‌بندی‌ها ================= */
+        function renderCategorySummary() {
+            $('categorySummary').textContent = dataReady
+                ? `${toFa(sortedCats.length)} دسته · ${toFa(allIcons.length)} آیکون` + (sourcesPending > 0 ? ' · در حال بارگذاری…' : '')
+                : 'در حال بارگذاری…';
+        }
+
         function catCardHtml(cat, label, count, previews) {
             const active = selectedCategory === cat;
             const previewHtml = previews.map(ic =>
-                `<div class="p-icon" data-mask="${getIconUrl(ic.name, 'default')}" title="${esc(ic.name)}"></div>`).join('');
+                `<div class="p-icon" data-mask="${iconMaskUrl(ic, 'default')}" title="${esc(ic.name)}"></div>`).join('');
             return `
             <button type="button" data-cat="${esc(cat)}" class="cat-card ${active ? 'cat-active' : ''}" style="width:200px" aria-pressed="${active}">
                 <div class="cat-arrow" aria-hidden="true">
@@ -749,7 +955,7 @@
         function renderCategories() {
             const q = catFilterQuery;
             const cats = sortedCats.filter(c => !q || normalize(catLabel(c)).includes(q) || c.includes(q));
-            $('categorySummary').textContent = dataReady ? `${toFa(sortedCats.length)} دسته · ${toFa(allIcons.length)} آیکون` : 'در حال بارگذاری…';
+            renderCategorySummary();
             const allPreviews = sortedCats.slice(0, 4).map(c => iconsByCat[c][0]);
             let html = catCardHtml('all', 'همه آیکون‌ها', allIcons.length, allPreviews);
             html += cats.map(c => catCardHtml(c, catLabel(c), iconsByCat[c].length, iconsByCat[c].slice(0, 4))).join('');
@@ -768,7 +974,6 @@
         }
 
         function setCategory(cat) {
-            // کلیک دوباره روی دسته فعال = برگشت به «همه»
             selectedCategory = (selectedCategory === cat && cat !== 'all') ? 'all' : cat;
             updateCategorySelection();
             filterAndRender();
@@ -791,10 +996,10 @@
             renderCategories();
         }, 150));
 
-        /* ================= کنترل کاروسل (دکمه‌ها + درگ + چرخ ماوس) ================= */
+        /* ================= کنترل کاروسل ================= */
         function updateCarouselButtons() {
             const max = carousel.scrollWidth - carousel.clientWidth;
-            const cur = Math.abs(carousel.scrollLeft); // در RTL مقدار منفی است
+            const cur = Math.abs(carousel.scrollLeft);
             prevBtn.disabled = cur <= 2;
             nextBtn.disabled = cur >= max - 2;
             carouselWrap.classList.toggle('at-start', cur <= 2);
@@ -806,8 +1011,6 @@
             nextBtn.addEventListener('click', () => carousel.scrollBy({ left: -STEP, behavior: 'smooth' }));
             carousel.addEventListener('scroll', updateCarouselButtons, { passive: true });
             window.addEventListener('resize', updateCarouselButtons);
-
-            // درگ با ماوس (لمسی از اسکرول بومی استفاده می‌کند)
             let down = false, startX = 0, startScroll = 0, dragged = false;
             carousel.addEventListener('pointerdown', e => {
                 if (e.pointerType !== 'mouse') return;
@@ -854,25 +1057,32 @@
         resetFiltersBtn.addEventListener('click', resetFilters);
         $('emptyResetBtn').addEventListener('click', resetFilters);
 
-        function filterAndRender() {
+        function applyFilters() {
             const terms = searchQuery.split(' ').filter(Boolean);
             filteredIcons = allIcons.filter(ic =>
                 (selectedCategory === 'all' || ic.category === selectedCategory) &&
                 terms.every(t => ic._hay.includes(t))
             );
+        }
+        function filterAndRender() {
+            applyFilters();
             visibleCount = BATCH;
             renderGrid();
-            // اگر کاربر پایین صفحه است، ابتدای نتایج را نشان بده
             if (resultsRow.getBoundingClientRect().top < 0) resultsRow.scrollIntoView({ block: 'start' });
         }
+        function refilterKeepVisible() { // هنگام رسیدن منبع جدید، موقعیت کاربر حفظ می‌شود
+            applyFilters();
+            visibleCount = Math.max(visibleCount, BATCH);
+            renderGrid();
+        }
 
-        /* ================= رندر گرید (افزایشی، بدون بازسازی کامل) ================= */
+        /* ================= رندر گرید ================= */
         function createCard(icon) {
             const card = cardTemplate.content.firstElementChild.cloneNode(true);
-            card.dataset.name = icon.name;
+            card.dataset.id = icon.id;
             card.setAttribute('aria-label', `${icon.title || icon.name} — کپی کد SVG`);
-            card.title = icon.upstream ? `${icon.title || icon.name} · منبع: ${icon.upstream} (${icon.license || ''})` : 'کلیک: کپی کد SVG';
-            card.querySelector('.icon-display').dataset.mask = getIconUrl(icon.name, currentStyle);
+            card.title = icon.title ? `${icon.title} — کلیک: کپی کد SVG` : 'کلیک: کپی کد SVG';
+            card.querySelector('.icon-display').dataset.mask = iconMaskUrl(icon, currentStyle);
             const nameEl = card.querySelector('.icon-name');
             nameEl.textContent = icon.name; nameEl.title = icon.name;
             const titleEl = card.querySelector('.icon-title');
@@ -897,7 +1107,7 @@
             if (maskObserver) maskObserver.disconnect();
             grid.innerHTML = '';
             lastRendered = 0;
-            appendBatch(); // پیش‌نمایش‌های دسته‌ی بارگذاری‌نشده هم دوباره observe می‌شوند
+            appendBatch();
         }
 
         function updateResultInfo() {
@@ -908,7 +1118,7 @@
             loadMoreBtn.hidden = !dataReady || visibleCount >= total;
             emptyState.hidden = !dataReady || total > 0;
             resetFiltersBtn.hidden = !(searchQuery || selectedCategory !== 'all');
-            requestAnimationFrame(maybeLoadMore); // پرکردن خودکار ویوپورترهای بلند
+            requestAnimationFrame(maybeLoadMore);
         }
 
         function loadMore() {
@@ -922,27 +1132,29 @@
         }
         loadMoreBtn.addEventListener('click', loadMore);
 
-        /* ================= اکشن‌های کارت (Event Delegation — امن و سریع) ================= */
+        /* ================= اکشن‌های کارت ================= */
         grid.addEventListener('click', e => {
             const card = e.target.closest('.icon-card');
             if (!card) return;
+            const icon = ICON_INDEX.get(card.dataset.id);
+            if (!icon) return;
             const btn = e.target.closest('[data-action]');
-            const name = card.dataset.name;
             if (btn) {
-                if (btn.dataset.action === 'copy') copyIcon(name, card);
-                else if (btn.dataset.action === 'svg') downloadSVG(name);
-                else if (btn.dataset.action === 'png') downloadPNG(name);
-            } else copyIcon(name, card); // کلیک روی خود کارت = کپی SVG
+                if (btn.dataset.action === 'copy') copyIcon(icon, card);
+                else if (btn.dataset.action === 'svg') downloadSVG(icon);
+                else if (btn.dataset.action === 'png') downloadPNG(icon);
+            } else copyIcon(icon, card);
         });
         grid.addEventListener('keydown', e => {
             if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('icon-card')) {
                 e.preventDefault();
-                copyIcon(e.target.dataset.name, e.target);
+                const icon = ICON_INDEX.get(e.target.dataset.id);
+                if (icon) copyIcon(icon, e.target);
             }
         });
 
-        /* ================= دریافت، رنگ‌آمیزی و خروجی SVG/PNG ================= */
-        const svgCache = new Map(); // کش متن SVG (کلید شامل استایل است)
+        /* ================= دریافت، رنگ‌آمیزی و خروجی ================= */
+        const svgCache = new Map();
         function fetchSvgText(url) {
             if (!svgCache.has(url)) {
                 svgCache.set(url, fetch(url)
@@ -952,7 +1164,7 @@
             return svgCache.get(url);
         }
 
-        // رنگ‌آمیزی صحیح: جایگزینی currentColor و رنگ‌های صریح، با حفظ opacity و ساختار bulk/two-tone
+        // جایگزینی currentColor و رنگ‌های صریح، با حفظ opacity و ساختار استایل‌ها
         function paint(el, color) {
             ['fill', 'stroke'].forEach(attr => {
                 const v = el.getAttribute(attr);
@@ -960,9 +1172,9 @@
             });
         }
 
-        async function getExportSvg(name) {
-            const snap = { size: iconSize, color: iconColor, style: currentStyle }; // عکس فوری تنظیمات
-            const text = await fetchSvgText(getIconUrl(name, snap.style));
+        async function getExportSvg(icon) {
+            const snap = { size: iconSize, color: iconColor, style: styleFor(icon, currentStyle) };
+            const text = icon.body ? buildRawSvg(icon) : await fetchSvgText(getIconUrl(icon.name, snap.style));
             const doc = new DOMParser().parseFromString(text, 'image/svg+xml');
             const svg = doc.querySelector('svg');
             if (!svg || doc.querySelector('parsererror')) throw new Error('SVG نامعتبر');
@@ -971,7 +1183,11 @@
             svg.setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns', 'http://www.w3.org/2000/svg');
             paint(svg, snap.color);
             svg.querySelectorAll('*').forEach(el => paint(el, snap.color));
-            return { svg: new XMLSerializer().serializeToString(svg), snap };
+            return {
+                svg: new XMLSerializer().serializeToString(svg),
+                snap,
+                baseName: icon.name + (icon.body ? '' : '-' + snap.style)
+            };
         }
 
         async function writeClipboard(text) {
@@ -987,9 +1203,9 @@
             }
         }
 
-        async function copyIcon(name, card) {
+        async function copyIcon(icon, card) {
             try {
-                const { svg } = await getExportSvg(name);
+                const { svg } = await getExportSvg(icon);
                 if (!await writeClipboard(svg)) throw new Error('clipboard');
                 showToast('کد SVG کپی شد!');
                 if (card) {
@@ -1007,21 +1223,21 @@
             setTimeout(() => URL.revokeObjectURL(href), 1000);
         }
 
-        async function downloadSVG(name) {
+        async function downloadSVG(icon) {
             try {
-                const { svg, snap } = await getExportSvg(name);
+                const { svg, baseName } = await getExportSvg(icon);
                 const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
-                triggerDownload(URL.createObjectURL(blob), `${name}-${snap.style}.svg`);
+                triggerDownload(URL.createObjectURL(blob), `${baseName}.svg`);
                 showToast('SVG دانلود شد!');
             } catch (err) { console.error(err); showToast('خطا در دانلود SVG', true); }
         }
 
-        async function downloadPNG(name) {
+        async function downloadPNG(icon) {
             try {
-                const { svg, snap } = await getExportSvg(name);
+                const { svg, snap, baseName } = await getExportSvg(icon);
                 const img = new Image();
                 img.onload = () => {
-                    const scale = 2; // خروجی رتینا
+                    const scale = 2;
                     const canvas = document.createElement('canvas');
                     canvas.width = snap.size * scale; canvas.height = snap.size * scale;
                     const ctx = canvas.getContext('2d');
@@ -1029,7 +1245,7 @@
                     ctx.drawImage(img, 0, 0, snap.size, snap.size);
                     canvas.toBlob(blob => {
                         if (!blob) { showToast('خطا در ساخت PNG', true); return; }
-                        triggerDownload(URL.createObjectURL(blob), `${name}-${snap.style}-${snap.size}px.png`);
+                        triggerDownload(URL.createObjectURL(blob), `${baseName}-${snap.size}px.png`);
                         showToast('PNG دانلود شد!');
                     }, 'image/png');
                 };
@@ -1088,7 +1304,7 @@
             }
         });
 
-        /* ================= اسکرول: دکمه بالا، سایه تولبار، بارگذاری بی‌نهایت ================= */
+        /* ================= اسکرول ================= */
         let ticking = false;
         window.addEventListener('scroll', () => {
             if (ticking) return;
@@ -1112,7 +1328,7 @@
         syncThemeUI();
         toggleSearchAffixes();
         setupCarousel();
-        loadData();
+        loadAllSources();
     })();
     </script>
 </body>

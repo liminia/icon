@@ -428,95 +428,117 @@
            هر مجموعه‌ای از https://icon-sets.iconify.design رایگان روی unpkg هست:
            { id: 'solar',  pkg: '@iconify-json/solar'  },
            { id: 'tabler', pkg: '@iconify-json/tabler' },
-           { id: 'lucide', pkg: '@iconify-json/lucide' },
-           بدون categorize، آیکون‌های منبع جدید در دسته «سایر» قرار می‌گیرند. */
+           خروجی categorize (در صورت وجود) از همان جدول ادغام دسته‌ها رد می‌شود؛
+           هر چیز ناشناخته به «سایر» می‌رود. */
         const ICONIFY_SETS = [
             { id: 'hugeicons', pkg: '@iconify-json/hugeicons', categorize: categorizeHuge },
         ];
 
-        const categoryOrder = [
-            'ui','interface','components','actions','operations','arrow-actions','arrows',
-            'files','file','folders','archive','documents','business','communication',
-            'email','mail','messaging','social','media','images','image','video','audio',
-            'music','playback','technology','devices','hardware','development','data',
-            'database','network','cloud','server','infrastructure','security','auth',
-            'identity','privacy','money','payment','bank','currency','finance','shopping',
-            'cart','store','ecommerce','travel','location','map','home','living',
-            'buildings','health','medical','nature','animals','food','education',
-            'science','sports','fitness','games','gaming','weather','time','clock',
-            'calendar','booking','transport','vehicles','automotive','aviation',
-            'design','tools','industrial','workshop','fashion','beauty','makeup',
-            'kids','family','people','faces','emoji','flags','symbols','shapes',
-            'text','typography','letters','numbers','persian','charts','navigation',
-            'directional','gestures','loading','status','warning','notifications',
-            'forms','table','tables','layout','grid','controls','settings',
-            'smart-home','iot','camera','photo','wifi','bluetooth','accessibility',
-            'ai','blockchain','crypto','wallet','energy','agriculture','plants',
-            'kitchen','drinks','baking','smoking','tobacco','hygiene','cleaning',
-            'laundry','furniture','stationery','legal','property','logistics',
-            'support','collaboration','meeting','entertainment','rewards',
-            'points','religion','culture','iran','iranian','province','country',
-            'apps','brands','frameworks','os','software','browser','search',
-            'production','product','order','expense','retail','running','body',
-            'anatomy','board-games','space','traffic','other'
+        /* ================= دسته‌بندی یکدست (۴۵ دسته، بدون تکرار) =================
+           CATEGORIES: ترتیب نمایش + برچسب فارسی هر دسته نهایی
+           CATEGORY_GROUPS: نگاشت همه دسته‌های خام منابع → دسته نهایی (لایه ادغام) */
+        const CATEGORIES = [
+            ['ui', 'رابط کاربری'],
+            ['arrows', 'فلش‌ها'],
+            ['actions', 'عملیات'],
+            ['symbols', 'نمادها و اشکال'],
+            ['emoji', 'چهره و شکلک'],
+            ['people', 'افراد و خانواده'],
+            ['text', 'متن و اعداد'],
+            ['files', 'فایل‌ها و اسناد'],
+            ['communication', 'ارتباطات'],
+            ['business', 'کسب‌وکار'],
+            ['charts', 'نمودار و آمار'],
+            ['money', 'پول و مالی'],
+            ['crypto', 'رمزارز'],
+            ['shopping', 'خرید و فروشگاه'],
+            ['security', 'امنیت'],
+            ['ai', 'هوش مصنوعی'],
+            ['devices', 'دستگاه‌ها'],
+            ['development', 'برنامه‌نویسی'],
+            ['database', 'داده و شبکه'],
+            ['images', 'تصویر و دوربین'],
+            ['video', 'ویدیو و رسانه'],
+            ['music', 'موسیقی و صدا'],
+            ['travel', 'سفر و مکان'],
+            ['home', 'خانه و ساختمان'],
+            ['transport', 'حمل‌ونقل'],
+            ['food', 'خوراک و نوشیدنی'],
+            ['nature', 'طبیعت و حیوانات'],
+            ['weather', 'آب‌وهوا'],
+            ['medical', 'سلامت و پزشکی'],
+            ['sports', 'ورزش و تناسب اندام'],
+            ['games', 'بازی'],
+            ['education', 'آموزش'],
+            ['science', 'علم و فضا'],
+            ['design', 'طراحی و ابزار'],
+            ['industrial', 'صنعت و انرژی'],
+            ['fashion', 'مد و زیبایی'],
+            ['cleaning', 'نظافت و بهداشت'],
+            ['smoking', 'سیگار و تنباکو'],
+            ['religion', 'دین و فرهنگ'],
+            ['iran', 'ایران و فارسی'],
+            ['rewards', 'جوایز و امتیاز'],
+            ['time', 'زمان و تقویم'],
+            ['accessibility', 'دسترس‌پذیری'],
+            ['brands', 'برندها'],
+            ['other', 'سایر']
         ];
 
-        const categoryMap = {
-            'accessibility':'دسترس‌پذیری','actions':'عملیات پایه','ai':'هوش مصنوعی',
-            'animals':'حیوانات','anatomy':'بدن و آناتومی','agriculture':'کشاورزی',
-            'apps':'اپلیکیشن‌ها','archive':'بایگانی','arrow-actions':'فلش‌ها',
-            'arrows':'فلش‌ها','audio':'صدا','auth':'احراز هویت','automotive':'خودرو',
-            'aviation':'هوانوردی','baking':'نان و شیرینی','bank':'بانک و پرداخت',
-            'beauty':'زیبایی و آرایش','blockchain':'بلاکچین','body':'بدن',
-            'booking':'رزرو','board-games':'بازی رومیزی','brands':'برندها',
-            'browser':'مرورگر','buildings':'ساختمان‌ها','business':'کسب‌وکار',
-            'cad':'طراحی فنی','calendar':'تقویم','camera':'دوربین','cart':'سبد خرید',
-            'charts':'نمودار','chevron':'شورون','cleaning':'نظافت',
-            'clock':'ساعت','cloud':'ابر','collaboration':'همکاری',
-            'communication':'ارتباطات','components':'اجزا','controls':'کنترل‌ها',
-            'country':'کشورها','crypto':'رمزارز','currency':'ارز',
-            'data':'داده','database':'پایگاه داده','design':'طراحی',
-            'development':'توسعه','devices':'دستگاه‌ها','directional':'جهت‌ها',
-            'documents':'اسناد','drinks':'نوشیدنی','ecommerce':'تجارت الکترونیک',
-            'education':'آموزش','email':'ایمیل','emoji':'شکلک','energy':'انرژی',
-            'entertainment':'سرگرمی','expense':'هزینه','faces':'چهره',
-            'family':'خانواده','fashion':'مد و پوشاک','file':'فایل','files':'فایل‌ها',
-            'finance':'مالی','fitness':'تناسب اندام','flags':'پرچم',
-            'folders':'پوشه','food':'خوراکی','forms':'فرم',
-            'frameworks':'فریم‌ورک','furniture':'مبلمان','games':'بازی',
-            'gaming':'گیمینگ','gestures':'حرکات دست','grid':'شبکه',
-            'hardware':'سخت‌افزار','health':'سلامت','home':'خانه',
-            'hygiene':'بهداشت','identity':'هویت','image':'تصویر',
-            'images':'تصاویر','industrial':'صنعتی','infrastructure':'زیرساخت',
-            'interface':'رابط کاربری','iot':'اینترنت اشیا','iran':'ایرانی',
-            'iranian':'ایرانی','kitchen':'آشپزخانه','kids':'کودک',
-            'layout':'چیدمان','laundry':'لباسشویی','legal':'حقوقی',
-            'letters':'حروف','living':'زندگی','loading':'بارگذاری',
-            'location':'مکان','logistics':'لجستیک','mail':'ایمیل',
-            'makeup':'آرایش','map':'نقشه','media':'رسانه',
-            'medical':'پزشکی','meeting':'جلسه','messaging':'پیام‌رسانی',
-            'money':'پول','music':'موسیقی','navigation':'ناوبری',
-            'nature':'طبیعت','network':'شبکه','notifications':'اعلان',
-            'numbers':'اعداد','office':'اداری','operations':'عملیات',
-            'order':'سفارش','os':'سیستم‌عامل','other':'سایر','payment':'پرداخت',
-            'people':'افراد','persian':'فارسی','phone':'تلفن',
-            'photo':'عکس','playback':'پخش','plants':'گیاهان',
-            'points':'امتیاز','privacy':'حریم خصوصی','product':'محصول',
-            'production':'تولید','property':'املاک','province':'استان‌ها',
-            'religion':'دین','rewards':'جوایز','retail':'خرده‌فروشی',
-            'running':'دویدن','science':'علم','search':'جست‌وجو',
-            'security':'امنیت','server':'سرور','shapes':'اشکال',
-            'shopping':'خرید','smoking':'سیگار','smart-home':'خانه هوشمند',
-            'social':'اجتماعی','software':'نرم‌افزار','space':'فضا',
-            'sports':'ورزش','stationery':'لوازم‌التحریر','status':'وضعیت','store':'فروشگاه',
-            'support':'پشتیبانی','symbols':'نمادها','table':'جدول',
-            'tables':'جداول','text':'متن','time':'زمان','tools':'ابزار',
-            'tobacco':'تنباکو','transport':'حمل‌ونقل','travel':'سفر',
-            'typography':'تایپوگرافی','ui':'رابط کاربری','users':'کاربران',
-            'vehicles':'وسایل نقلیه','video':'ویدیو','wallet':'کیف پول',
-            'warning':'هشدار','weather':'آب‌وهوا','wifi':'وای‌فای',
-            'workshop':'کارگاه'
+        const CATEGORY_GROUPS = {
+            ui: 'ui interface components controls settings layout grid forms table tables navigation search',
+            arrows: 'arrows arrow-actions directional chevron',
+            actions: 'actions operations gestures status loading warning alerts product-actions',
+            symbols: 'symbols shapes flags',
+            emoji: 'emoji faces',
+            people: 'people users family kids',
+            text: 'text typography letters numbers editor editing-controls',
+            files: 'files file folders archive documents stationery formats',
+            communication: 'communication messaging social phone email mail notifications support calls chat',
+            business: 'business office meeting collaboration legal meetings',
+            charts: 'charts',
+            money: 'money finance currency bank payment wallet expense billing banking',
+            crypto: 'crypto blockchain',
+            shopping: 'shopping cart store ecommerce retail product order logistics checkout',
+            security: 'security auth identity privacy',
+            ai: 'ai',
+            devices: 'devices hardware technology device-tools',
+            development: 'development software frameworks os browser apps',
+            database: 'database data server cloud network wifi bluetooth connectivity network-tools',
+            images: 'images image photo camera photo-editing',
+            video: 'video playback media entertainment events',
+            music: 'music audio',
+            travel: 'travel location map country country-maps',
+            home: 'home living smart-home iot furniture buildings property interiors city-services real-estate',
+            transport: 'transport vehicles automotive aviation traffic',
+            food: 'food drinks kitchen baking food-service ingredients bakery meals',
+            nature: 'nature plants animals agriculture',
+            weather: 'weather',
+            medical: 'medical health body anatomy medical-care',
+            sports: 'sports fitness running cycling',
+            games: 'games gaming board-games',
+            education: 'education',
+            science: 'science space',
+            design: 'design cad tools design-tools',
+            industrial: 'industrial workshop energy infrastructure production',
+            fashion: 'fashion beauty makeup',
+            cleaning: 'cleaning hygiene laundry bathroom home-life',
+            smoking: 'smoking tobacco',
+            religion: 'religion culture',
+            iran: 'iran iranian persian province province-maps',
+            rewards: 'rewards points',
+            time: 'time clock calendar booking',
+            accessibility: 'accessibility',
+            brands: 'brands',
+            other: 'other'
         };
+
+        const CATEGORY_ALIASES = {};
+        Object.entries(CATEGORY_GROUPS).forEach(([canonId, raws]) =>
+            raws.split(' ').forEach(r => { CATEGORY_ALIASES[r] = canonId; }));
+        const CATEGORY_LABELS = Object.fromEntries(CATEGORIES);
+        const CATEGORY_ORDER = CATEGORIES.map(c => c[0]);
+        const canon = c => CATEGORY_ALIASES[c] || 'other';
 
         const styles = [
             { id: 'default',  name: 'outline',  rep: 'home' },
@@ -533,7 +555,8 @@
             '#6366f1','#a855f7','#ec4899','#8b5cf6','#14b8a6','#f43f5e'
         ];
 
-        /* ===== دسته‌بندی خودکار بر اساس نام (برای منابعی که متادیتای دسته ندارند) ===== */
+        /* ===== دسته‌بندی خودکار بر اساس نام (برای منابعی که متادیتای دسته ندارند) =====
+           خروجی این قواعد، کلیدهای خام است و از جدول ادغام بالا رد می‌شود. */
         const HUGE_OVERRIDES = [
             ['time','alarm-clock'], ['design','aspect-ratio'],
             ['text','arrange-by-numbers arrange-by-letters'],
@@ -696,11 +719,9 @@
         };
         const getStylePath = s => s === 'default' ? 'svg' : 'svg/' + s;
         const getIconUrl = (name, style) => `${KASHI_PKG}/dist/${getStylePath(style)}/${name}.svg`;
-        const catLabel = c => categoryMap[c] || c.replace(/-/g, ' ');
-        // هر منبع فقط استایل‌های خودش را دارد؛ بقیه به‌صورت خودکار به استایل پیش‌فرض برمی‌گردند
+        const catLabel = c => CATEGORY_LABELS[c] || c;
         const styleFor = (icon, style) => icon.source === 'kashi' ? style : 'default';
 
-        /* ساخت SVG در حافظه برای منابع JSON (بدون درخواست شبکه per-icon) */
         const buildRawSvg = ic => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${ic.w} ${ic.h}">${ic.body}</svg>`;
         const svgToDataUrl = svg => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
         function iconMaskUrl(icon, style) {
@@ -859,7 +880,7 @@
             const data = await fetchJson(KASHI_PKG + '/general-sources.json');
             return (data.icons || []).map(ic => ({
                 id: 'kashi:' + ic.name, name: ic.name, title: ic.title || '',
-                category: ic.category || 'other', source: 'kashi'
+                category: canon(ic.category), source: 'kashi'
             }));
         }
 
@@ -871,7 +892,7 @@
                 if (!ic || !ic.body || ic.hidden) return;
                 out.push({
                     id: set.id + ':' + name, name, title: '',
-                    category: set.categorize ? set.categorize(name) : 'other',
+                    category: canon(set.categorize ? set.categorize(name) : 'other'),
                     source: set.id, body: ic.body, w: ic.width || W, h: ic.height || H
                 });
             };
@@ -923,7 +944,7 @@
             iconsByCat = {};
             allIcons.forEach(ic => { (iconsByCat[ic.category] = iconsByCat[ic.category] || []).push(ic); });
             sortedCats = Object.keys(iconsByCat).sort((a, b) => {
-                const ia = categoryOrder.indexOf(a), ib = categoryOrder.indexOf(b);
+                const ia = CATEGORY_ORDER.indexOf(a), ib = CATEGORY_ORDER.indexOf(b);
                 if (ia === -1 && ib === -1) return iconsByCat[b].length - iconsByCat[a].length;
                 if (ia === -1) return 1;
                 if (ib === -1) return -1;
@@ -1070,7 +1091,7 @@
             renderGrid();
             if (resultsRow.getBoundingClientRect().top < 0) resultsRow.scrollIntoView({ block: 'start' });
         }
-        function refilterKeepVisible() { // هنگام رسیدن منبع جدید، موقعیت کاربر حفظ می‌شود
+        function refilterKeepVisible() {
             applyFilters();
             visibleCount = Math.max(visibleCount, BATCH);
             renderGrid();
@@ -1164,7 +1185,6 @@
             return svgCache.get(url);
         }
 
-        // جایگزینی currentColor و رنگ‌های صریح، با حفظ opacity و ساختار استایل‌ها
         function paint(el, color) {
             ['fill', 'stroke'].forEach(attr => {
                 const v = el.getAttribute(attr);

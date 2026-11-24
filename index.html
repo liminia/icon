@@ -17,7 +17,7 @@
     <script>tailwind.config = { darkMode: 'class' };</script>
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
 
-    <!-- بوت تم: همیشه پیش‌فرض لایت بدون خواندن از حافظه مرورگر -->
+    <!-- بوت تم: همیشه پیش‌فرض لایت -->
     <script>
         (function () {
             document.documentElement.classList.remove('dark');
@@ -203,15 +203,38 @@
         .cat-card:hover { transform: translateY(-2px); border-color: var(--border-strong); box-shadow: var(--shadow-card); }
         .cat-card.cat-active { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 0 0 1px rgba(59,130,246,.25), 0 10px 24px -8px rgba(59,130,246,.2); }
         .cat-preview { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; align-items: center; justify-items: center; padding: 14px 12px; min-height: 62px; }
+        
+        /* اسلات و اسکلتون اختصاصی آیکون‌های پیش‌نمایش دسته‌بندی */
+        .cat-preview .p-slot {
+            position: relative;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cat-preview .p-slot-skel {
+            position: absolute;
+            inset: 0;
+            border-radius: 6px;
+            transition: opacity .25s ease;
+        }
+        .cat-preview .p-slot.is-loaded .p-slot-skel {
+            opacity: 0;
+            pointer-events: none;
+        }
         .cat-preview .p-icon {
             width: 20px; height: 20px; background-color: var(--text-2);
+            opacity: 0;
             -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
             -webkit-mask-position: center; mask-position: center;
             transition: transform .15s ease, background-color .15s ease, opacity .25s ease;
         }
+        .cat-preview .p-icon.loaded { opacity: 1; }
         .cat-card:hover .p-icon { background-color: var(--text-1); }
         .cat-card:hover .p-icon:hover { transform: scale(1.25); }
         .cat-card.cat-active .p-icon { background-color: var(--accent); }
+        
         .cat-foot { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-top: 1px solid var(--border); }
         .cat-name { font-size: 13px; font-weight: 700; color: var(--text-2); }
         .cat-card.cat-active .cat-name { color: var(--accent); }
@@ -718,10 +741,9 @@
             return (0.299 * r + 0.587 * g + 0.114 * b) / 255;
         };
 
-        // ذخیره تنظیمات کاربر غیرفعال است؛ فقط کش دیتای آیکون‌ها در localStorage باقی می‌ماند تا لود سریع باشد
         const store = {
             get(k, f) { return f; },
-            set(k, v) { /* تنظیمات پس از رفرش ذخیره نمی‌شوند */ }
+            set(k, v) { }
         };
 
         const getStylePath = s => s === 'default' ? 'svg' : 'svg/' + s;
@@ -740,7 +762,7 @@
             return getIconUrl(icon.name, styleFor(icon, style));
         }
 
-        /* ================= وضعیت (همیشه مقادیر پیش‌فرض در شروع) ================= */
+        /* ================= وضعیت ================= */
         let allIcons = [], filteredIcons = [], iconsByCat = {}, sortedCats = [];
         const ICON_INDEX = new Map();
         const LOADED_URLS = new Set();
@@ -790,7 +812,7 @@
         /* ================= بارگذاری تنبل ماسک‌ها + اسکلتون اختصاصی هر آیکون ================= */
         function markIconLoaded(el) {
             el.classList.add('loaded');
-            const slot = el.closest('.icon-slot');
+            const slot = el.closest('.icon-slot, .p-slot');
             if (slot) slot.classList.add('is-loaded');
         }
 
@@ -873,7 +895,7 @@
             if (persist) store.set('color', iconColor);
         }
 
-        /* ================= تم (همیشه پیش‌فرض لایت) ================= */
+        /* ================= تم ================= */
         function syncThemeUI() {
             const dark = root.classList.contains('dark');
             $('themeIconMoon').hidden = dark;
@@ -1084,8 +1106,17 @@
 
         function catCardHtml(cat, label, count, previews) {
             const active = selectedCategory === cat;
-            const previewHtml = previews.map(ic =>
-                `<div class="p-icon" data-mask="${iconMaskUrl(ic, 'default')}" title="${esc(ic.name)}"></div>`).join('');
+            const previewHtml = previews.map(ic => {
+                const url = iconMaskUrl(ic, 'default');
+                const ready = url.startsWith('data:') || LOADED_URLS.has(url);
+                const maskStyle = ready ? `style="-webkit-mask-image:url('${url}');mask-image:url('${url}')"` : `data-mask="${url}"`;
+                return `
+                <div class="p-slot ${ready ? 'is-loaded' : ''}">
+                    <div class="p-slot-skel shimmer-box" aria-hidden="true"></div>
+                    <div class="p-icon ${ready ? 'loaded' : ''}" ${maskStyle} title="${esc(ic.name)}"></div>
+                </div>`;
+            }).join('');
+
             return `
             <button type="button" data-cat="${esc(cat)}" class="cat-card ${active ? 'cat-active' : ''}" style="width:200px" aria-pressed="${active}">
                 <div class="cat-arrow" aria-hidden="true">
